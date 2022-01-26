@@ -1,4 +1,3 @@
-import Container from '@/components/common/Container';
 import MoreStories from '@/components/more-stories';
 import HeroPost from '@/components/hero-post';
 import Intro from '@/components/intro';
@@ -16,22 +15,18 @@ const Index = ({ allPosts }: Props) => {
   const morePosts = allPosts.slice(1);
   return (
     <>
-      {/* <Head>
-        <title>ysh's Web Site</title>
-      </Head> */}
-      <Container>
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.coverImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-      </Container>
+      <Intro />
+      {heroPost && (
+        <HeroPost
+          title={heroPost.title}
+          coverImage={heroPost.coverImage}
+          date={heroPost.date}
+          author={heroPost.author}
+          slug={heroPost.slug}
+          excerpt={heroPost.excerpt}
+        />
+      )}
+      {morePosts.length > 0 && <MoreStories posts={morePosts} />}
     </>
   );
 };

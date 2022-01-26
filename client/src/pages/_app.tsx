@@ -1,6 +1,19 @@
+import Layout from '@/components/common/Layout';
+import '@/styles/index.css';
 import { AppProps } from 'next/app';
-import '../styles/index.css';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+const App = ({
+  Component,
+  pageProps,
+  headTitle = `ysh's Web Site`,
+}: AppProps & { headTitle?: string }): JSX.Element => {
+  return (
+    <>
+      <Layout headTitle={headTitle}>
+        <Component {...pageProps} />
+      </Layout>
+    </>
+  );
+};
+
+export default App;

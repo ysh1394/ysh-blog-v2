@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
-import Container from '../../components/container';
+import Container from '@/components/common/Container';
 import PostBody from '../../components/post-body';
-import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
-import Layout from '../../components/layout';
+
 import { getPostBySlug, getAllPosts } from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Head from 'next/head';
@@ -23,34 +22,31 @@ const Post = ({ post, morePosts, preview }: Props) => {
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
-  console.log('post >>>', post);
+  // console.log('post >>>', post);
   return (
-    <Layout preview={preview}>
-      <Container>
-        <Header />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article className="mb-32">
-              <Head>
-                <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
-                </title>
-                <meta property="og:image" content={post.ogImage.url} />
-              </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                author={post.author}
-              />
-              <PostBody content={post.content} />
-            </article>
-          </>
-        )}
-      </Container>
-    </Layout>
+    <Container>
+      {router.isFallback ? (
+        <PostTitle>Loading…</PostTitle>
+      ) : (
+        <>
+          <article className="mb-32">
+            <Head>
+              <title>
+                {post.title} | Next.js Blog Example with {CMS_NAME}
+              </title>
+              <meta property="og:image" content={post.ogImage.url} />
+            </Head>
+            <PostHeader
+              title={post.title}
+              coverImage={post.coverImage}
+              date={post.date}
+              author={post.author}
+            />
+            <PostBody content={post.content} />
+          </article>
+        </>
+      )}
+    </Container>
   );
 };
 
@@ -63,6 +59,8 @@ type Params = {
 };
 
 export async function getStaticProps({ params }: Params) {
+  console.log(';params >>> ', params);
+
   const post = getPostBySlug(params.slug, [
     'title',
     'date',
@@ -76,10 +74,7 @@ export async function getStaticProps({ params }: Params) {
 
   return {
     props: {
-      post: {
-        ...post,
-        content,
-      },
+      post: { ...post, content },
     },
   };
 }
@@ -87,12 +82,12 @@ export async function getStaticProps({ params }: Params) {
 export async function getStaticPaths() {
   const posts = getAllPosts(['slug']);
 
+  console.log(';params >>> ', posts);
+
   return {
     paths: posts.map((post) => {
       return {
-        params: {
-          slug: post.slug,
-        },
+        params: { slug: post.slug },
       };
     }),
     fallback: false,
