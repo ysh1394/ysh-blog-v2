@@ -6,6 +6,7 @@ import { getAllPosts } from '@/lib/api';
 import Head from 'next/head';
 import { CMS_NAME } from '@/lib/constants';
 import Post from '@/types/post';
+import { useEffect } from 'react';
 
 type Props = {
   allPosts: Post[];
@@ -14,6 +15,24 @@ type Props = {
 const Index = ({ allPosts }: Props) => {
   const heroPost = allPosts[0];
   const morePosts = allPosts.slice(1);
+
+  // useEffect(async () => {
+  //   const res = await fetch('http://localhost:4000/search', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json, text/plain, */*',
+  //       'User-Agent': '*',
+  //     },
+  //   });
+  //   console.log('res ', res);
+
+  //   // const jsonData = await res.json();
+
+  //   // const data = JSON.stringify(jsonData);
+  //   // console.log('data ', data);
+  // }, []);
+
   return (
     <>
       {/* <Head>
@@ -39,6 +58,23 @@ const Index = ({ allPosts }: Props) => {
 export default Index;
 
 export const getStaticProps = async () => {
+  const res = await fetch('http://localhost:4000/search', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent': '*',
+    },
+  });
+
+  console.log('res ', res);
+
+  // const jsonData = await res.text();
+  const jsonData = await res.json();
+
+  const data = JSON.stringify(jsonData);
+  console.log('data ', data);
+
   const allPosts = getAllPosts([
     'title',
     'date',
